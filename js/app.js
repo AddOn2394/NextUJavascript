@@ -1,3 +1,55 @@
+function EstiloClic(Evento) {
+  var evento = Evento || window.event;
+  switch(evento.type) {
+    case 'mouseup':
+      this.style.padding = '0px';
+      break;
+    case 'mousedown':
+      this.style.padding = '4px';
+      break;
+          
+  }
+};
+window.onload = function() {
+  document.getElementById('1').onmouseup = EstiloClic;
+  document.getElementById('1').onmousedown = EstiloClic;
+  document.getElementById('2').onmouseup = EstiloClic;
+  document.getElementById('2').onmousedown = EstiloClic;
+  document.getElementById('3').onmouseup = EstiloClic;
+  document.getElementById('3').onmousedown = EstiloClic;
+  document.getElementById('4').onmouseup = EstiloClic;
+  document.getElementById('4').onmousedown = EstiloClic;    
+  document.getElementById('5').onmouseup = EstiloClic;
+  document.getElementById('5').onmousedown = EstiloClic;    
+  document.getElementById('6').onmousedown = EstiloClic;
+  document.getElementById('6').onmouseup = EstiloClic;    
+  document.getElementById('7').onmouseup = EstiloClic;
+  document.getElementById('7').onmousedown = EstiloClic;
+  document.getElementById('8').onmouseup = EstiloClic;
+  document.getElementById('8').onmousedown = EstiloClic;
+  document.getElementById('9').onmouseup = EstiloClic;
+  document.getElementById('9').onmousedown = EstiloClic;
+  document.getElementById('0').onmouseup = EstiloClic;
+  document.getElementById('0').onmousedown = EstiloClic;
+  document.getElementById('on').onmouseup = EstiloClic;
+  document.getElementById('on').onmousedown = EstiloClic;
+  document.getElementById('sign').onmouseup = EstiloClic;
+  document.getElementById('sign').onmousedown = EstiloClic;
+  document.getElementById('raiz').onmouseup = EstiloClic;
+  document.getElementById('raiz').onmousedown = EstiloClic;
+  document.getElementById('dividido').onmouseup = EstiloClic;
+  document.getElementById('dividido').onmousedown = EstiloClic;
+  document.getElementById('por').onmouseup = EstiloClic;
+  document.getElementById('por').onmousedown = EstiloClic;
+  document.getElementById('menos').onmouseup = EstiloClic;
+  document.getElementById('menos').onmousedown = EstiloClic;
+  document.getElementById('punto').onmouseup = EstiloClic;
+  document.getElementById('punto').onmousedown = EstiloClic;
+  document.getElementById('igual').onmouseup = EstiloClic;
+  document.getElementById('igual').onmousedown = EstiloClic;
+  document.getElementById('mas').onmouseup = EstiloClic;
+  document.getElementById('mas').onmousedown = EstiloClic;
+};
 document.getElementById('1').addEventListener('click',function(){
     Calculadora.init(1);
 });
@@ -53,6 +105,7 @@ document.getElementById('mas').addEventListener('click',function(){
     Calculadora.init('mas');
 });
 var $resultado=0;
+var $numeroTemporal=0;
 var $operaciones=0;
 var $tecla=0;
 var Calculadora = 
@@ -68,7 +121,9 @@ var Calculadora =
     },
     agregarOperacion : function()
     {
-        $operaciones=$valor
+        $operaciones=$valor;
+        $numeroTemporal=$resultado;
+        $resultado="";
     },
     operar : function()
     {
@@ -90,31 +145,52 @@ var Calculadora =
     },
     suma : function()
     {
-        $resultado   +=   $resultado;
+        $resultado   =   Number.parseFloat($resultado)+Number.parseFloat($numeroTemporal);
     },
     resta : function()
     {
-        $resultado   -=   $resultado;    
+        $resultado   =   Number.parseFloat($numeroTemporal)-Number.parseFloat($resultado);    
     },
     multiplicacion : function()
     {
-        $resultado   *=   $resultado;    
+        $resultado   =   Number.parseFloat($numeroTemporal)*Number.parseFloat($resultado);    
     },
     division : function()
     {
-        $resultado   /=   $resultado;    
+        $resultado   =   Number.parseFloat($numeroTemporal)/Number.parseFloat($resultado);    
     },
     concatenarNumero : function()
     {
-        $resultado   =   $resultado.toString()+$valor.toString();    
+        if(Number.isInteger($resultado.length))
+            {
+                if($resultado.length<9)
+                    {
+                        $resultado   = $resultado.toString()+$valor.toString();         
+                    }
+            }
+        else
+            {
+                $resultado   =   $resultado.toString()+$valor.toString(); 
+            }
     },    
     cambiarSigno : function()
     {
-        $resultado   =   5;        
+        if($resultado>0)
+            {
+                $resultado*= -1
+            }
+        else
+            {
+                $resultado= Math.abs($resultado);
+            }
     },
     agregarDecimal : function()
     {
-        $resultado   =   6;        
+        if($resultado.indexOf(".")<0)
+        {
+            $resultado   =   $resultado.toString()+'.';        
+        }
+        
     },
     getResultado : function()
     {
@@ -131,6 +207,7 @@ var Calculadora =
                     break;
                 case 'igual':
                     this.operar();
+                    $numeroTemporal=0;
                     break;
                 case 'punto':
                     this.agregarDecimal();
@@ -146,7 +223,15 @@ var Calculadora =
                     break;
             }
         }   
+        if($numeroTemporal>0)
+        {
         document.getElementById('display').innerHTML=$resultado;
+        }
+        else
+        {
+        document.getElementById('display').innerHTML=Number.parseFloat($resultado);    
+        }
+        
     }        
 }
 
